@@ -18,7 +18,7 @@ class Burger extends Component{
         },[])
         // console.log(items);
 
-        if(items.length==0){
+        if(items.length===0){
             items=<h5 style={{'margin':'0px'}}>Please Add Something</h5>
         }
         return(
