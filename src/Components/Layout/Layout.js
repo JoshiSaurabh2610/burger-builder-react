@@ -1,9 +1,10 @@
 import React from 'react'
 import Aux from '../../hoc/Auxilliary/Auxilliary'
+import Toolbar from '../Navigation/Toolbar/Toolbar'
 const Layout=(props)=>{
     return(
         <Aux>
-            <div>Toolbar,sideDrawer,BaackDrop</div>
+            <Toolbar/>
             <main>
                 {props.children}
             </main>
