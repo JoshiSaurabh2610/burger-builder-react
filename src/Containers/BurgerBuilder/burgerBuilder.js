@@ -30,6 +30,7 @@ class BurgerBuilder extends Component{
         error:false,
     }
     componentDidMount(){
+        // console.log(this.props,'HELLO');
         axios.get('https://burger-builder-react-2642b-default-rtdb.firebaseio.com/ingredients.json').then(
             res=>{
                 // console.log(res);
@@ -73,32 +74,43 @@ class BurgerBuilder extends Component{
         this.setState({orderNow:false});
     }
     continueOrderHandler=()=>{
-        this.setState({loading:true});
-        const order={
-            ingredient: this.state.ingredient,
-            price: this.state.TotalPrice,
-            customer:{
-                'name':'Saurabh Joshi',
-                address:{
-                    streetNo:'04',
-                    area:'vijayPark,Maujpur',
-                    zipCode:'110053',
-                    Landmark:'near Shiv Mandir'
-                },
-                email:'joshisaurabh2610@gmail.com'
-            },
-            deliveryMethod:'fastest'
+    //     this.setState({loading:true});
+    //     const order={
+    //         ingredient: this.state.ingredient,
+    //         price: this.state.TotalPrice,
+    //         customer:{
+    //             'name':'Saurabh Joshi',
+    //             address:{
+    //                 streetNo:'04',
+    //                 area:'vijayPark,Maujpur',
+    //                 zipCode:'110053',
+    //                 Landmark:'near Shiv Mandir'
+    //             },
+    //             email:'joshisaurabh2610@gmail.com'
+    //         },
+    //         deliveryMethod:'fastest'
+    //     }
+    //    axios.post('/orders.json',order).then(
+    //        response=>{
+    //         //    console.log(response);
+    //         this.setState({loading:false,orderNow:false})
+    //        }
+    //    ).catch(
+    //        error=>{
+    //             this.setState({loading:false,orderNow:false})
+    //        }
+    //    )
+        
+        const queryParam=[];
+        for(let i in this.state.ingredient){
+            queryParam.push(i+'='+this.state.ingredient[i]);
         }
-       axios.post('/orders.json',order).then(
-           response=>{
-            //    console.log(response);
-            this.setState({loading:false,orderNow:false})
-           }
-       ).catch(
-           error=>{
-                this.setState({loading:false,orderNow:false})
-           }
-       )
+        let queryString=queryParam.join('&');
+        this.props.history.push({
+            pathname:'/checkout',
+            search: '?'+queryString,
+        });
+        
     }
     render(){
         let order=null;

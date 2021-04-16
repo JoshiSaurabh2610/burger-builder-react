@@ -25,3 +25,8 @@
         display: none;
     }
 }
+
+.spaceDiv{
+    height: 60px;
+    width: 100%;
+}

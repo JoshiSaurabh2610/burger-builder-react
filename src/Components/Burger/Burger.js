@@ -5,7 +5,7 @@ import classes from './Burger.module.css'
 
 class Burger extends Component{
     render(){
-        // console.log(this.props.ingredients);
+        console.log(this.props.ingredients);
         let items=Object.keys(this.props.ingredients).map((igkey)=>{
             return [...Array(this.props.ingredients[igkey])].map((_,i)=>{
                 // console.log(igkey); 
