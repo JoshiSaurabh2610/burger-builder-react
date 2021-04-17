@@ -13,6 +13,7 @@ class  ContactData extends Component{
         },
         loading:false,
     }
+    
     OrderHandler=(event)=>{
         event.preventDefault();
         console.log(this.props);
@@ -44,6 +45,7 @@ class  ContactData extends Component{
            }
        )
     }
+
     render(){
         let form= <form>
                     <input className={classes.Input} type="text" name="Name" placeholder="Your Name"></input>
