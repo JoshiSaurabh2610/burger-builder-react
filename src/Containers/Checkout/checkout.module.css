@@ -1,0 +1,29 @@
+.Checkout{
+    width: 60%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.TableSummary{
+    border: 2px solid #eee;
+    box-shadow: 0 3px 4px #ccc;
+}
+
+.ingredientTable{
+    width: 90%;
+    background-color: #ddd;
+    border-spacing: 15px;
+    text-align: center;
+    border-collapse: collapse;
+    margin: 30px auto;
+}
+
+.ingredientTable tr:nth-child(even){
+    background-color: #f1f1c1;
+}
+
+@media (min-width:600) {
+    .Checkout{
+        width: 600px;
+    }
+}

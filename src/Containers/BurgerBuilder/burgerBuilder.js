@@ -73,32 +73,42 @@ class BurgerBuilder extends Component{
         this.setState({orderNow:false});
     }
     continueOrderHandler=()=>{
-        this.setState({loading:true});
-        const order={
-            ingredient: this.state.ingredient,
-            price: this.state.TotalPrice,
-            customer:{
-                'name':'Saurabh Joshi',
-                address:{
-                    streetNo:'04',
-                    area:'vijayPark,Maujpur',
-                    zipCode:'110053',
-                    Landmark:'near Shiv Mandir'
-                },
-                email:'joshisaurabh2610@gmail.com'
-            },
-            deliveryMethod:'fastest'
+    // this.setState({loading:true});
+    //     const order={
+    //         ingredient: this.state.ingredient,
+    //         price: this.state.TotalPrice,
+    //         customer:{
+    //             'name':'Saurabh Joshi',
+    //             address:{
+    //                 streetNo:'04',
+    //                 area:'vijayPark,Maujpur',
+    //                 zipCode:'110053',
+    //                 Landmark:'near Shiv Mandir'
+    //             },
+    //             email:'joshisaurabh2610@gmail.com'
+    //         },
+    //         deliveryMethod:'fastest'
+    //     }
+    //    axios.post('/orders.json',order).then(
+    //        response=>{
+    //         //    console.log(response);
+    //         this.setState({loading:false,orderNow:false})
+    //        }
+    //    ).catch(
+    //        error=>{
+    //             this.setState({loading:false,orderNow:false})
+    //        }
+    //    )
+        let queryParam=[];
+        for(let i in this.state.ingredient){
+            queryParam.push(`${i}=${this.state.ingredient[i]}`)
         }
-       axios.post('/orders.json',order).then(
-           response=>{
-            //    console.log(response);
-            this.setState({loading:false,orderNow:false})
-           }
-       ).catch(
-           error=>{
-                this.setState({loading:false,orderNow:false})
-           }
-       )
+        const queryParamString=queryParam.join("&");
+        // console.log(queryParamString);
+        this.props.history.push({
+            pathname: this.props.match.path+'/checkout',
+            search:queryParamString
+        })
     }
     render(){
         let order=null;
