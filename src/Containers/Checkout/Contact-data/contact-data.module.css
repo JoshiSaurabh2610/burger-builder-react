@@ -1,0 +1,10 @@
+.ContactForm{
+    text-align: center;
+    margin: auto;
+}
+
+.ContactForm input{
+    display: block;
+    width: 40%;
+    margin: 20px auto;
+}
