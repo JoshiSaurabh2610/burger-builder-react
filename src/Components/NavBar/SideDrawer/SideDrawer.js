@@ -11,9 +11,9 @@ const SideDrawer=(props)=>{
         <div className={classAttached.join(' ')}>
            <Hamberger clicked={props.toggle}
                         open={props.show}/>
-            <Navitem>Home</Navitem>
-            <Navitem>Burgers</Navitem>
-            <Navitem>About</Navitem>
+            <Navitem link="/" exact >Home</Navitem>
+            <Navitem link="/burgers">Burgers</Navitem>
+            <Navitem link="/my-orders">My Orders</Navitem>
         </div>
     );
 };

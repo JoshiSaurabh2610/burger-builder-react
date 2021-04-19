@@ -13,9 +13,9 @@ const Toolbar=(props)=>{
                             open={props.show}/>
                 <Logo />
                 <div className={classes.Navitems}>
-                    <Navitem active link="/">Home</Navitem>
+                    <Navitem link="/" exact >Home</Navitem>
                     <Navitem link="/burgers">Burgers</Navitem>
-                    <Navitem link="/about">About</Navitem>
+                    <Navitem link="/my-orders">My Orders</Navitem>
                 </div>
             </div>
             <div className={classes.space}></div>
