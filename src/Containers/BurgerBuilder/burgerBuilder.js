@@ -7,6 +7,7 @@ import Model from "../../Components/UI/Model/Model";
 import Aux from "../../hoc/Auxilliary/Auxilliary";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import classes from "./BurgerBuilder.module.css";
 
 const INGREDIENT_PRICE={
     'Salad':10,
@@ -92,8 +93,10 @@ class BurgerBuilder extends Component{
         if(this.state.ingredient){
             burger=(
             <Aux>
-                <Burger
-                ingredients={this.state.ingredient}/>
+                <div className={classes.Burger}>
+                    <Burger
+                    ingredients={this.state.ingredient}/>
+                </div>
                 <BuildControls
                     TotalPrice={this.state.TotalPrice}
                     ingredients={this.state.ingredient}

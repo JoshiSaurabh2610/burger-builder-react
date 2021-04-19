@@ -1,0 +1,22 @@
+.Order{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+    height: 200px;
+    border: 2px solid #eee;
+    box-shadow: 0 3px 4px #ccc;
+    margin: 20px auto;
+}
+
+.Burger{
+    display: flex;
+    align-items: center;
+    height: 80%;
+    width: 30%;
+}
+
+.Table{
+    margin: 0 10px;
+}
+

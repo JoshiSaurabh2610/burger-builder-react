@@ -8,11 +8,6 @@ class ContactData extends Component{
     state={
         loading:false,
     }
-
-    CancelHandler=()=>{
-        this.props.history.replace('/burgers');
-    }
-
    
     render(){
         return(
@@ -27,7 +22,7 @@ class ContactData extends Component{
 
                 <Button 
                     btnType="Danger"
-                    clicked={this.CancelHandler}>Cancel</Button>
+                    clicked={this.props.Cancel}>Cancel</Button>
 
                 <Button 
                     btnType="Sucess"

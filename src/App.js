@@ -3,6 +3,7 @@ import BurgerBuilder from "./Containers/BurgerBuilder/burgerBuilder";
 import Layout from "./Components/Layout/Layout";
 import Checkout from "./Containers/Checkout/Checkout";
 import {Route} from 'react-router-dom'
+import Orders from "./Containers/Orders/Orders";
 
 class App extends Component {
   render() {
@@ -10,8 +11,7 @@ class App extends Component {
       <Layout>
          <Route path='/burgers' exact component={BurgerBuilder} />
          <Route path='/burgers/checkout' component={Checkout}/>
-         {/* <BurgerBuilder/>
-         <Checkout/> */}
+         <Route path='/my-orders' component={Orders} />
       </Layout>
     );
   }

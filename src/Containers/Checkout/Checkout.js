@@ -6,6 +6,7 @@ import Spinner from "../../Components/UI/Spinner/Spinner";
 import ContactData from "./Contact-data/Contact-data";
 import { Route } from "react-router";
 import axios from "../../axios-orders";
+import IngredientTable from "../../Components/IngredientTable/IngredientTable";
 
 
 const INGREDIENT_PRICE={
@@ -41,7 +42,7 @@ class Checkout extends Component{
 
     CancelHandler=()=>{
         console.log(this.props);
-        this.props.history.goBack();
+        this.props.history.replace('/burgers');
     }
 
     OrderNowHandler=()=>{
@@ -76,44 +77,18 @@ class Checkout extends Component{
 
 
     render(){
-        let TotalPrice=10;
-        let tablerow=null;
-        if(this.state.ingredients)
-            tablerow=Object.entries(this.state.ingredients).map(([item,count])=>{
-                // console.log(key,val);
-                const price=count*INGREDIENT_PRICE[item]
-                TotalPrice+=price;
-                return (<tr key={item+count+price}>
-                            <td>{item}</td>
-                            <td>{count}</td>
-                            <td>{price}</td>
-                        </tr>)
-            })
+        const burger=(
+            <div className={classes.Burger}>
+                 <Burger ingredients={this.state.ingredients} />
+            </div>
+        )
         return(
             <div className={classes.Checkout}>
                 <h1>Hope its Tastes Well!</h1> 
-                {this.state.ingredients ? <Burger ingredients={this.state.ingredients} />:<Spinner/>}
+                {this.state.ingredients ? burger :<Spinner/>}
                 <div className={classes.TableSummary}>
                     <h4>Ingredient Table</h4>
-                    <table className={classes.ingredientTable}>
-                        {/* <caption>Check out Burger Once</caption> */}
-                        <thead>
-                            <tr>
-                                <th>Ingredients</th>
-                                <th>Count</th>
-                                <th>Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tablerow}
-                        </tbody>
-                        <thead>
-                            <tr>
-                                <th colSpan="2">Total Cost</th>
-                                <th>10+{TotalPrice-10}={TotalPrice}</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <IngredientTable ingredients={this.state.ingredients} />
                 </div>
 
                 <Button 
@@ -124,7 +99,7 @@ class Checkout extends Component{
                     btnType="Sucess"
                     clicked={this.ContinueToContactData}>Continue</Button>
 
-                <Route path={this.props.match.path+'/contact-data'} render={()=><ContactData Continue={this.OrderNowHandler} />} />
+                <Route path={this.props.match.path+'/contact-data'} render={()=><ContactData Cancel={this.CancelHandler} Continue={this.OrderNowHandler} />} />
             </div>
         )
     }

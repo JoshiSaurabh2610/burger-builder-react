@@ -1,0 +1,13 @@
+
+.ingredientTable{
+    width: 90%;
+    background-color: #ddd;
+    border-spacing: 15px;
+    text-align: center;
+    border-collapse: collapse;
+    margin: 30px auto;
+}
+
+.ingredientTable tr:nth-child(even){
+    background-color: #f1f1c1;
+}
