@@ -22,6 +22,7 @@ class ContactData extends Component{
                     maxLength:25,
                 },
                 isValid:false,
+                touched:false,
             },
             email:{
                 ElementType:'input',
@@ -34,6 +35,7 @@ class ContactData extends Component{
                     Required:true,
                 },
                 isValid:false,
+                touched:false,
             },
             address:{
                 ElementType:'input',
@@ -47,6 +49,7 @@ class ContactData extends Component{
                     maxLength:30,
                 },
                 isValid:false,
+                touched:false,
             },
             pinCode:{
                 ElementType:'input',
@@ -61,6 +64,7 @@ class ContactData extends Component{
                     minLength:6,
                 },
                 isValid:false,
+                touched:false,
             },
             deliveryMethod:{
                 ElementType:'select',
@@ -71,6 +75,7 @@ class ContactData extends Component{
                 value:'cheapest',
                 Validation:{},
                 isValid:true,
+                touched:false,
             }
         },
         loading:false,
@@ -105,7 +110,24 @@ class ContactData extends Component{
            }
        )
     }
-   
+    
+    checkValidity(value,rules){
+        if(!rules){
+            return true;
+        }
+        let isValid=true;
+        if(rules.Required){
+            isValid= isValid && value.trim()!=='';
+        }
+        if(rules.minLength){
+            isValid=isValid && value.length>=rules.minLength;
+        }
+        if(rules.maxLength){
+            isValid=isValid && value.length<=rules.maxLength;
+        }
+        return isValid;
+    }
+
     inputChangedHandler=(event,inputIdentifier)=>{
         let updatedOrderForm={
             ...this.state.orderForm
@@ -114,6 +136,9 @@ class ContactData extends Component{
             ...updatedOrderForm[inputIdentifier]
         }
         updatedItem.value=event.target.value;
+        updatedItem.isValid=this.checkValidity(updatedItem.value,updatedItem.Validation);
+        updatedItem.touched=true;
+        console.log(inputIdentifier,updatedItem.isValid);
         updatedOrderForm[inputIdentifier]=updatedItem;
         this.setState({orderForm:updatedOrderForm})
     }
@@ -125,7 +150,9 @@ class ContactData extends Component{
                         type={this.state.orderForm[item].ElementType}
                         properties={this.state.orderForm[item].properties}
                         value={this.state.orderForm[item].value}
-                        changed={(event)=>this.inputChangedHandler(event,item)}/>
+                        changed={(event)=>this.inputChangedHandler(event,item)}
+                        inValid={!this.state.orderForm[item].isValid}
+                        touched={this.state.orderForm[item].touched} />
         });
         return(
             <div className={classes.ContactForm}>

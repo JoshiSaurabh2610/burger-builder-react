@@ -35,12 +35,11 @@ class Checkout extends Component{
     }
 
     ContinueToContactData=()=>{
-        console.log('hello');
         this.props.history.push(this.props.match.path+'/contact-data');
     }
 
     CancelHandler=()=>{
-        console.log(this.props);
+        // console.log(this.props);
         this.props.history.replace('/burgers');
     }
 
