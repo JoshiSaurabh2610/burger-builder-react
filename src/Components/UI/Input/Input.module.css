@@ -19,9 +19,15 @@
     display: block;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
 .InputElement:focus{
     outline: none;
     background-color: #ccc;
+}
+
+.inValid{
+    border: 1px solid red;
+    background-color: rgba(250, 128, 114, 0.616) ;
 }
