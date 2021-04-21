@@ -7,6 +7,7 @@ import Input from '../../../Components/UI/Input/Input';
 class ContactData extends Component {
     state = {
         orderForm: {
+
             name :{
                 elementType:'input',
                 elementConfig:{
@@ -30,7 +31,7 @@ class ContactData extends Component {
                     placeholder:'ZIP CODE',
                 },
                 value:''
-            },
+            },    
             email:{
                 elementType:'input',
                 elementConfig:{
@@ -39,13 +40,14 @@ class ContactData extends Component {
                 },
                 value:''
             },
+
             deliveryMethod: {
-                elementType:'input',
+                elementType:'select',
                 elementConfig:{
                     options:[
+                        {value:'select',displayValue:'Select Delivery Method'},
                         {value:'fastest',displayValue:'Fastest'},
                         {value:'cheapest',displayValue:'Cheapest'},
-
                     ]
                 },
                 value:''
@@ -58,20 +60,14 @@ class ContactData extends Component {
         event.preventDefault();
         console.log(this.props);
         this.setState({ loading: true });
+        const formData={};
+        for(let identifier in this.state.orderForm){
+            formData[identifier]=this.state.orderForm[identifier].value
+        }
         const order = {
             ingredient: this.props.ingredient,
             price: this.props.price,
-            customer: {
-                'name': 'Saurabh Joshi',
-                address: {
-                    streetNo: '04',
-                    area: 'vijayPark,Maujpur',
-                    zipCode: '110053',
-                    Landmark: 'near Shiv Mandir'
-                },
-                email: 'joshisaurabh2610@gmail.com'
-            },
-            deliveryMethod: 'fastest'
+            orderData: formData,  
         }
         axios.post('/orders.json', order).then(
             response => {
@@ -86,6 +82,20 @@ class ContactData extends Component {
         )
     }
 
+    inputChangedHandler=(event,inputIdentifier)=>{
+        // console.log(event.target.value);
+        // console.log(inputIdentifier);
+        let updatedOrderForm={
+            ...this.state.orderForm
+        }
+        let updatedFormElement={
+            ...updatedOrderForm[inputIdentifier]
+        }
+        updatedFormElement.value=event.target.value;
+        updatedOrderForm[inputIdentifier]=updatedFormElement;
+        this.setState({orderForm:updatedOrderForm})
+    }
+
     render() {
         let formElementArray=[];
         for(let key in this.state.orderForm){
@@ -94,16 +104,19 @@ class ContactData extends Component {
                 config:this.state.orderForm[key],
             });
         }
-        let form = <form>
+        let form = <form onSubmit={this.OrderHandler}>
             {
                 formElementArray.map(formElement=>{
                 return <Input 
                         key={formElement.id}   
                         elementType={formElement.config.elementType} 
                         elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}/>
+                        value={formElement.config.value}
+                        changed={(event)=>this.inputChangedHandler(event,formElement.id)}/>
                 })
             }
+            <Button
+                    btnType="Sucess">ORDER</Button>
         </form>
 
         if (this.state.loading) form = <Spinner />
@@ -112,9 +125,6 @@ class ContactData extends Component {
             <div className={classes.ContactData}>
                 <h1>Contact  Form</h1>
                 {form}
-                <Button
-                    btnType="Sucess"
-                    clicked={this.OrderHandler}>ORDER</Button>
             </div>
         )
     }
