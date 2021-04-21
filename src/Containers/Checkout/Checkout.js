@@ -5,7 +5,6 @@ import Button from '../../Components/UI/Button/Button';
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import ContactData from "./Contact-data/Contact-data";
 import { Route } from "react-router";
-import axios from "../../axios-orders";
 import IngredientTable from "../../Components/IngredientTable/IngredientTable";
 
 
@@ -45,37 +44,6 @@ class Checkout extends Component{
         this.props.history.replace('/burgers');
     }
 
-    OrderNowHandler=()=>{
-        this.setState({loading:true});
-        const order={
-            ingredient: this.state.ingredients,
-            price: this.state.TotalPrice,
-            customer:{
-                'name':'Saurabh Joshi',
-                address:{
-                    streetNo:'04',
-                    area:'vijayPark,Maujpur',
-                    zipCode:'110053',
-                    Landmark:'near Shiv Mandir'
-                },
-                email:'joshisaurabh2610@gmail.com'
-            },
-            deliveryMethod:'fastest'
-        }
-       axios.post('/orders.json',order).then(
-           response=>{
-            //    console.log(response);
-                this.setState({loading:false})
-                this.props.history.replace('/burgers');
-           }
-       ).catch(
-           error=>{
-                this.setState({loading:false})
-           }
-       )
-    }
-
-
     render(){
         const burger=(
             <div className={classes.Burger}>
@@ -99,7 +67,10 @@ class Checkout extends Component{
                     btnType="Sucess"
                     clicked={this.ContinueToContactData}>Continue</Button>
 
-                <Route path={this.props.match.path+'/contact-data'} render={()=><ContactData Cancel={this.CancelHandler} Continue={this.OrderNowHandler} />} />
+                <Route path={this.props.match.path+'/contact-data'} render={(props)=><ContactData {...props} 
+                                                                                        ingredients={this.state.ingredients}
+                                                                                        TotalPrice={this.state.TotalPrice} 
+                                                                                        Cancel={this.CancelHandler} />} />
             </div>
         )
     }

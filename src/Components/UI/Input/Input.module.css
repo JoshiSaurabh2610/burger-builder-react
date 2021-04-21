@@ -1,0 +1,16 @@
+.Input{
+    width: 80%;
+    margin: 10px auto;
+    box-sizing: border-box;
+}
+.inputElement{
+    width: 100%;
+    outline: none;
+    border: 1px solid #ccc;
+    margin: 0px;
+    padding: 6px 10px;
+    display: block;
+    width: 100%;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
