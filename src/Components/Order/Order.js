@@ -1,11 +1,13 @@
 import classes from './order.module.css';
 import React from 'react'
+import Burger from '../Burger/Burger';
 
-const Order=()=>{
+const Order=(props)=>{
+    console.log(props);
     return(
         <div className={classes.Order}>
-            <p>ingredients: salad(1)</p>
-            <span>Price: 50 Rupees</span>
+            <Burger ingredients={props.itemDetails.ingredient} />
+            <p>Price: {props.itemDetails.price}</p>
         </div>
     );
 };
