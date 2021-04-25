@@ -2,37 +2,12 @@ import React, { Component } from "react";
 import Burger from "../../Components/Burger/Burger";
 import classes from './checkout.module.css';
 import Button from '../../Components/UI/Button/Button';
-import Spinner from "../../Components/UI/Spinner/Spinner";
 import ContactData from "./Contact-data/Contact-data";
-import { Route } from "react-router";
+import { Redirect, Route } from "react-router";
 import IngredientTable from "../../Components/IngredientTable/IngredientTable";
-
-
-const INGREDIENT_PRICE={
-    'Salad':10,
-    'Bacon':50,
-    'Meat':70,
-    'Cheese':15        
-};
+import { connect } from "react-redux";
 
 class Checkout extends Component{
-    state={
-        ingredients:null,
-        TotalPrice:10,
-        loading:false,
-    }
-    componentDidMount(){
-        let ingredient={};
-        // console.log(this.props);
-        const Query= new URLSearchParams(this.props.location.search);
-        let price=10;
-        for(let i of Query){
-            // console.log(i);
-            ingredient[i[0]]=i[1]
-            price+=INGREDIENT_PRICE[i[0]]*i[1];
-        }
-        this.setState({ingredients:ingredient,TotalPrice:price})
-    }
 
     ContinueToContactData=()=>{
         this.props.history.push(this.props.match.path+'/contact-data');
@@ -44,18 +19,25 @@ class Checkout extends Component{
     }
 
     render(){
-        const burger=(
+        let burger=(
             <div className={classes.Burger}>
-                 <Burger ingredients={this.state.ingredients} />
+                 <Burger ingredients={this.props.ingredients} />
             </div>
         )
+        
+        if(!this.props.ingredients)burger=this.props.history.push('/burgers');
+
+        let purchasedRedirect=null;
+        if(this.props.purchased) purchasedRedirect=<Redirect to='/burgers'/>
+
         return(
             <div className={classes.Checkout}>
                 <h1>Hope its Tastes Well!</h1> 
-                {this.state.ingredients ? burger :<Spinner/>}
+                {burger}
+                {purchasedRedirect}
                 <div className={classes.TableSummary}>
                     <h4>Ingredient Table</h4>
-                    <IngredientTable ingredients={this.state.ingredients} />
+                    <IngredientTable ingredients={this.props.ingredients} />
                 </div>
 
                 <Button 
@@ -67,11 +49,20 @@ class Checkout extends Component{
                     clicked={this.ContinueToContactData}>Continue</Button>
 
                 <Route path={this.props.match.path+'/contact-data'} render={(props)=><ContactData {...props} 
-                                                                                        ingredients={this.state.ingredients}
-                                                                                        TotalPrice={this.state.TotalPrice} 
+                                                                                        ingredients={this.props.ingredients}
+                                                                                        TotalPrice={this.props.TotalPrice} 
                                                                                         Cancel={this.CancelHandler} />} />
             </div>
         )
     }
 }
-export default Checkout; 
+
+const mapStateToProps=(state)=>{
+    return{
+        ingredients:state.burgerBuilder.ingredients,
+        TotalPrice:state.burgerBuilder.TotalPrice,
+        purchased:state.order.purchased,
+    }
+}
+
+export default connect(mapStateToProps)(Checkout); 

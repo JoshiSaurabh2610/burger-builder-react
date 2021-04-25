@@ -1,13 +1,9 @@
 import * as actionType from '../actions/actionType';
 
 const initialState={
-    ingredients:{
-        'Salad':0,
-        'Bacon':0,
-        'Meat':0,
-        'Cheese':0,
-    },
-    TotalPrice:10,
+    ingredients:null,
+    TotalPrice:null,
+    error:false,
 };
 
 
@@ -41,7 +37,19 @@ const reducer=(state=initialState,action)=>{
                 },
                 TotalPrice:state.TotalPrice-INGREDIENT_PRICE[action.igName],
             };
-
+        
+        case actionType.INIT_BURGER:
+            return{
+                ...state,
+                ingredients:action.ingredients,
+                TotalPrice:10,
+                error:false,
+            }
+        case actionType.INIT_BURGER_FAIL:
+            return{
+                ...state,
+                error:true,
+            }
         default:
             return state;
     }

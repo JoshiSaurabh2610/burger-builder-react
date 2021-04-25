@@ -2,10 +2,10 @@ import React from 'react'
 import classes from './IngredientTable.module.css'
 const INGREDIENT_PRICE={
     'Salad':10,
-    'Bacon':50,
-    'Meat':70,
+    'Bacon':30,
+    'Meat':40,
     'Cheese':15        
-};
+}
 
 const IngredientTable = (props)=>{
     let TotalPrice=10;

@@ -13,6 +13,7 @@ import orderReducer from './store/reducers/order';
 
 const rootReducer= combineReducers({
   burgerBuilder:burgeBuilderReducer,
+  order:orderReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

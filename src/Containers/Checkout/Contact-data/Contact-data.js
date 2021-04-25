@@ -1,10 +1,12 @@
 import classes from "./contact-data.module.css";
 import { Component } from "react";
 import Button from "../../../Components/UI/Button/Button";
-import axios from "../../../axios-orders";
+import Spinner from '../../../Components/UI/Spinner/Spinner'
 import Input from "../../../Components/UI/Input/Input";
+import { connect } from "react-redux";
 
 
+import * as actionCreator from '../../../store/actions';
 
 class ContactData extends Component{
 
@@ -78,7 +80,6 @@ class ContactData extends Component{
                 touched:false,
             }
         },
-        loading:false,
     }
 
     // componentDidMount(){
@@ -98,17 +99,7 @@ class ContactData extends Component{
             },
             deliveryMethod:this.state.orderForm['deliveryMethod'].value,
         }
-       axios.post('/orders.json',order).then(
-           response=>{
-            //    console.log(response);
-                this.setState({loading:false})
-                this.props.history.replace('/burgers');
-           }
-       ).catch(
-           error=>{
-                this.setState({loading:false})
-           }
-       )
+        this.props.OrderNowHandler(order);
     }
     
     checkValidity(value,rules){
@@ -154,6 +145,9 @@ class ContactData extends Component{
                         inValid={!this.state.orderForm[item].isValid}
                         touched={this.state.orderForm[item].touched} />
         });
+        if(this.props.loading){
+            inputElement= <Spinner/>
+        }
         return(
             <div className={classes.ContactForm}>
                 <h2>Enter Your Contact Details</h2>
@@ -173,4 +167,16 @@ class ContactData extends Component{
     };
 };
 
-export default ContactData;
+const mapStateToProps=state=>{
+    return{
+        loading:state.order.loading,
+    }
+}
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        OrderNowHandler: (order)=> dispatch(actionCreator.OrderNowHandler(order)),
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps) (ContactData);

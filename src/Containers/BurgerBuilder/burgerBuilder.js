@@ -15,24 +15,10 @@ import * as actionCreator from '../../store/actions';
 class BurgerBuilder extends Component{
     state={
         orderNow:false,
-        loading:false,
-        error:false,
     }
     componentDidMount(){
-        // axios.get('https://burger-builder-react-2642b-default-rtdb.firebaseio.com/ingredients.json').then(
-        //     res=>{
-        //         // console.log(res);
-        //         let TotalPrice = Object.keys(res.data).reduce((acc,item)=>{
-        //             return acc+INGREDIENT_PRICE[item]*res.data[item];
-        //         },10)
-        //         // console.log(TotalPrice);
-        //         this.setState({ingredient:res.data,TotalPrice:TotalPrice});
-        //     }
-        // ).catch(
-        //     err=>{
-        //         this.setState({error:true})
-        //     }
-        // )
+        this.props.initBurgerIngredient();
+        this.props.PurchaseStart();
     }
     orderNowHandler=()=>{
         this.setState({orderNow:true});
@@ -41,20 +27,12 @@ class BurgerBuilder extends Component{
         this.setState({orderNow:false});
     }
     continueOrderHandler=()=>{
-        let queryParam=[];
-        for(let i in this.props.ingredients){
-            queryParam.push(`${i}=${this.props.ingredients[i]}`)
-        }
-        const queryParamString=queryParam.join("&");
-        // console.log(queryParamString);
-        this.props.history.push({
-            pathname: this.props.match.path+'/checkout',
-            search:queryParamString
-        })
+        this.props.PurchaseStart();
+        this.props.history.push(this.props.match.path+'/checkout')
     }
     render(){
         let order=null;
-        let burger=this.state.error ? <p style={{textAlign:'center','marginTop':'100px'}}>
+        let burger=this.props.error ? <p style={{textAlign:'center','marginTop':'100px'}}>
                                         Application broken ingredient can't be loadded sorry for inconvinence</p>
                                     :<Spinner/>
         if(this.props.ingredients){
@@ -77,9 +55,6 @@ class BurgerBuilder extends Component{
                     clicked={this.cancelOrderHandler}
                     continue={this.continueOrderHandler}/>
         }
-        if(this.state.loading){
-            order=<Spinner />
-        }
         return(
             <Aux>
                 <Model 
@@ -97,6 +72,7 @@ const mapStateToProps=(state)=>{
     return{
         ingredients:state.burgerBuilder.ingredients,
         TotalPrice:state.burgerBuilder.TotalPrice,
+        error:state.burgerBuilder.error,
     }
 }
 
@@ -104,6 +80,8 @@ const mapDispatchToProps=(dispatch)=>{
     return{
         addIngredientHandler: (type)=>dispatch(actionCreator.addIngredientHandler(type)),
         removeIngredientHandler:(type)=>dispatch(actionCreator.removeIngredientHandler(type)),
+        initBurgerIngredient:()=>dispatch(actionCreator.initBurgerIngredient()),
+        PurchaseStart: ()=>dispatch(actionCreator.PurchaseStart()),
     }
 }
 
