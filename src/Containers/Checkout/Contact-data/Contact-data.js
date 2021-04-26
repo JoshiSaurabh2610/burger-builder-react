@@ -80,13 +80,15 @@ class ContactData extends Component{
                 touched:false,
             }
         },
+        formValid:false,
     }
 
     // componentDidMount(){
     //     console.log(this.props)
     // }
 
-    OrderNowHandler=()=>{
+    OrderNowHandler=(event)=>{
+        event.preventDefault()
         this.setState({loading:true});
         const order={
             ingredient: this.props.ingredients,
@@ -129,39 +131,42 @@ class ContactData extends Component{
         updatedItem.value=event.target.value;
         updatedItem.isValid=this.checkValidity(updatedItem.value,updatedItem.Validation);
         updatedItem.touched=true;
-        console.log(inputIdentifier,updatedItem.isValid);
         updatedOrderForm[inputIdentifier]=updatedItem;
-        this.setState({orderForm:updatedOrderForm})
+
+        let formValid=true;
+        for(let inputIdentifier in this.state.orderForm){
+            formValid=formValid && this.state.orderForm[inputIdentifier].isValid;
+        }
+        // console.log(this.state.formValid,formValid);
+        this.setState({orderForm:updatedOrderForm,formValid:formValid}); 
     }
 
     render(){
-        let inputElement=null;
-        inputElement=Object.keys(this.state.orderForm).map(item=>{
-            return<Input key={item} 
-                        type={this.state.orderForm[item].ElementType}
-                        properties={this.state.orderForm[item].properties}
-                        value={this.state.orderForm[item].value}
-                        changed={(event)=>this.inputChangedHandler(event,item)}
-                        inValid={!this.state.orderForm[item].isValid}
-                        touched={this.state.orderForm[item].touched} />
-        });
+        let form=null;
+        form=(
+            <form onSubmit={this.OrderNowHandler}>
+                {    
+                    Object.keys(this.state.orderForm).map(item=>{
+                        return<Input key={item} 
+                                    type={this.state.orderForm[item].ElementType}
+                                    properties={this.state.orderForm[item].properties}
+                                    value={this.state.orderForm[item].value}
+                                    changed={(event)=>this.inputChangedHandler(event,item)}
+                                    inValid={!this.state.orderForm[item].isValid}
+                                    touched={this.state.orderForm[item].touched} />
+                    })
+                }
+                <Button btnType="Sucess"
+                    disable={!this.state.formValid}>ORDER</Button>
+            </form>
+        );
         if(this.props.loading){
-            inputElement= <Spinner/>
+            form= <Spinner/>
         }
         return(
             <div className={classes.ContactForm}>
                 <h2>Enter Your Contact Details</h2>
-                <form>
-                    {inputElement}
-                </form>
-
-                <Button 
-                    btnType="Danger"
-                    clicked={this.props.Cancel}>Cancel</Button>
-
-                <Button 
-                    btnType="Sucess"
-                    clicked={this.OrderNowHandler}>Continue</Button>
+                {form}
             </div>
         );
     };
