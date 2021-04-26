@@ -8,37 +8,15 @@ import Aux from "../../hoc/Auxilliary/Auxilliary";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
-import * as actionType from '../../store/actions';
+import * as actions from '../../store/actions';
 
-class BurgerBuilder extends Component{
-    // constructor(props){
-    //     super(props);
-    //     this.state={
-    //         ...
-    //     }
-    // }
-    
+class BurgerBuilder extends Component{    
     state={
         orderNow:false,
-        loading:false,
-        error:false,
     }
+
     componentDidMount(){
-        // console.log(this.props,'HELLO');
-        // axios.get('https://burger-builder-react-2642b-default-rtdb.firebaseio.com/ingredients.json').then(
-        //     res=>{
-        //         // console.log(res);
-        //         let TotalPrice = Object.keys(res.data).reduce((acc,item)=>{
-        //             return acc+INGREDIENT_PRICE[item]*res.data[item];
-        //         },10)
-        //         // console.log(TotalPrice);
-        //         this.setState({ingredient:res.data,TotalPrice:TotalPrice});
-        //     }
-        // ).catch(
-        //     err=>{
-        //         this.setState({error:true})
-        //     }
-        // )
+        this.props.initIngredient();
     }
 
     orderNowHandler=()=>{
@@ -48,34 +26,32 @@ class BurgerBuilder extends Component{
         this.setState({orderNow:false});
     }
     continueOrderHandler=()=>{
+        this.props.purchaseInit();
         this.props.history.push('/checkout');
     }
     render(){
         // console.log(this.props.ingredient);
         let order=null;
-        let burger=this.state.error ? <p style={{textAlign:'center','marginTop':'100px'}}>
+        let burger=this.props.error ? <p style={{textAlign:'center','marginTop':'100px'}}>
                                         Application broken ingredient can't be loadded sorry for inconvinence</p>
                                     :<Spinner/>
         if(this.props.ingredient){
             burger=(
-            <Aux>
-                <Burger
-                ingredients={this.props.ingredient}/>
-                <BuildControls
-                    TotalPrice={this.props.TotalPrice}
-                    ingredients={this.props.ingredient}
-                    More={this.props.addIngredientHandler}
-                    Less={this.props.removeIngredientHandler}
-                    orderNow={this.orderNowHandler}/>
-            </Aux>);
+                <Aux>
+                    <Burger
+                    ingredients={this.props.ingredient}/>
+                    <BuildControls
+                        TotalPrice={this.props.TotalPrice}
+                        ingredients={this.props.ingredient}
+                        More={this.props.addIngredientHandler}
+                        Less={this.props.removeIngredientHandler}
+                        orderNow={this.orderNowHandler}/>
+                </Aux>);
             order=<OrderSummary
                     totalPrice={this.props.TotalPrice}
                     ingredient={this.props.ingredient}
                     clicked={this.cancelOrderHandler}
                     continue={this.continueOrderHandler}/>
-        }
-        if(this.state.loading){
-            order=<Spinner />
         }
         return(
             <Aux>
@@ -92,15 +68,18 @@ class BurgerBuilder extends Component{
 
 const mapStateToProps=state=>{
     return{
-        ingredient: state.ingredients,
-        TotalPrice: state.totalPrice,
+        ingredient: state.burgerBuilder.ingredients,
+        TotalPrice: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error,
     };
 }
 
 const mapDispatchToProps=dispatch=>{
     return{
-        addIngredientHandler: (igName)=>dispatch({type:actionType.ADD_INGREDIENT,ingredientName:igName}),
-        removeIngredientHandler: (igName)=>dispatch({type:actionType.REMOVE_INGREDIENT,ingredientName:igName}),
+        addIngredientHandler: (igName)=>dispatch(actions.addIngredient(igName)),
+        removeIngredientHandler: (igName)=>dispatch(actions.removeIngredient(igName)),
+        initIngredient: ()=>dispatch(actions.initIngredient()),
+        purchaseInit: ()=>dispatch(actions.purchaseInit()),
     }
 }
 
