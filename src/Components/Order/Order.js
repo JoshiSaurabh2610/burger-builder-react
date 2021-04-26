@@ -3,7 +3,6 @@ import React from 'react'
 import Burger from '../Burger/Burger';
 
 const Order=(props)=>{
-    console.log(props);
     return(
         <div className={classes.Order}>
             <Burger ingredients={props.itemDetails.ingredient} />

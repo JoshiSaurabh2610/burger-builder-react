@@ -1,46 +1,51 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
-const purchaseBurgerSucess = (id,orderData)=>{
-    // console.log('[purchaseBurgerSucess] ',id,orderData);
-    return{
-        type: actionTypes.PURCHASE_SUCESS,
-        orderId:id,
-        orderData:orderData
-    }
-}
-
-const purchaseBurgerFail =(error)=>{
-    return{
-        type:actionTypes.PURCHASE_FAIL,
-        err:error,
-    }
-};
-
-const purchaseBurgerStart=()=>{
-    return{
-        type:actionTypes.PURCHASE_START,
-    }
-}
-
 export const purchaseBurger=(orderData)=>{
     return dispatch=>{
         // console.log('[ orderActions.js] ',orderData);
-        dispatch(purchaseBurgerStart());
+        dispatch({type:actionTypes.PURCHASE_START});
         axios.post('/orders.json', orderData).then(
             response => {
                 // console.log('[ orderActions.js] PURACHASE SUCESS',orderData);
-                dispatch(purchaseBurgerSucess(response.data.name,orderData))
+                dispatch({
+                    type: actionTypes.PURCHASE_SUCESS,
+                    orderId:response.data.name,
+                    orderData:orderData
+                })
             }
         ).catch( err => {
-            dispatch(purchaseBurgerFail(err));             
-            }
-        )
+            dispatch({
+                type:actionTypes.PURCHASE_FAIL,
+                err:err,
+            });             
+        })
     }
 }
 
 export const purchaseInit=()=>{
     return dispatch=>{
         dispatch({type:actionTypes.PURCHASE_INIT});
+    }
+}
+
+
+export const orderFetch=()=>{
+    return dispatch=>{
+        dispatch({type:actionTypes.ORDER_FETCH_START});
+        axios.get('/orders.json').then(
+            res=>{
+                const fetchedOrders=[];
+                for(let key in res.data){
+                    fetchedOrders.push({
+                        ...res.data[key],
+                        id:key
+                    });
+                }
+               dispatch({type:actionTypes.ORDER_FETCH_SUCESS,orders:fetchedOrders});
+            }
+        ).catch(err=>{
+            dispatch({type:actionTypes.ORDER_FETCH_FAIL})
+        })
     }
 }
