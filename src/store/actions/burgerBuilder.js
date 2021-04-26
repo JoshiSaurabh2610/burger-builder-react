@@ -26,7 +26,7 @@ export const initBurgerIngredient=()=>{
     return dispatch=>{
         axios.get('https://burger-builder-react-2642b-default-rtdb.firebaseio.com/ingredients.json').then(
             res=>{
-                dispatch(setInitialBurger(res.data));
+                dispatch(setInitialBurger(res.data,10));
             }
         ).catch(
             err=>{

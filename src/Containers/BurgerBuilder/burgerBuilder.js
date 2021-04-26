@@ -18,7 +18,6 @@ class BurgerBuilder extends Component{
     }
     componentDidMount(){
         this.props.initBurgerIngredient();
-        this.props.PurchaseStart();
     }
     orderNowHandler=()=>{
         this.setState({orderNow:true});
