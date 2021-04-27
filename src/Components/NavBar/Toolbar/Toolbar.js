@@ -16,6 +16,7 @@ const Toolbar=(props)=>{
                 <Navitem link="/">Home</Navitem>
                 <Navitem link="/burgers">Burgers</Navitem>
                 <Navitem link="/orders">Orders</Navitem>
+                <Navitem link="/auth">Login</Navitem>
             </div>
         </div>
         <div className={classes.spaceDiv}></div>

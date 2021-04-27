@@ -99,7 +99,7 @@ class ContactData extends Component {
             customerData: formData,  
         }
         // console.log('Order Release from contactData.js',order);
-        this.props.orderNow(order);
+        this.props.orderNow(order,this.props.token);
     }
 
     checkValidity(value,rules){
@@ -182,12 +182,13 @@ const mapStateToProps=(state)=>{
         ingredient:state.burgerBuilder.ingredients,
         price:state.burgerBuilder.totalPrice,
         loading:state.order.loading,
+        token:state.auth.idToken,
     }
 }
 
 const mapDispatchToProps= dispatch=>{
     return{
-        orderNow: (orderData)=>dispatch(action.purchaseBurger(orderData)),
+        orderNow: (orderData,token)=>dispatch(action.purchaseBurger(orderData,token)),
     }
 }
 

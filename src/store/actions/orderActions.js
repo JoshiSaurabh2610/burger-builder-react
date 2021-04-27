@@ -1,11 +1,11 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
-export const purchaseBurger=(orderData)=>{
+export const purchaseBurger=(orderData,token)=>{
     return dispatch=>{
         // console.log('[ orderActions.js] ',orderData);
         dispatch({type:actionTypes.PURCHASE_START});
-        axios.post('/orders.json', orderData).then(
+        axios.post('/orders.json?auth='+token, orderData).then(
             response => {
                 // console.log('[ orderActions.js] PURACHASE SUCESS',orderData);
                 dispatch({
@@ -30,10 +30,10 @@ export const purchaseInit=()=>{
 }
 
 
-export const orderFetch=()=>{
+export const orderFetch=(token)=>{
     return dispatch=>{
         dispatch({type:actionTypes.ORDER_FETCH_START});
-        axios.get('/orders.json').then(
+        axios.get('/orders.json?auth='+token).then(
             res=>{
                 const fetchedOrders=[];
                 for(let key in res.data){

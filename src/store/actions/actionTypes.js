@@ -8,7 +8,12 @@ export const PURCHASE_START = 'PURCHASE_START';
 export const PURCHASE_SUCESS =  'PURCHASE_SUCESS';
 export const PURCHASE_FAIL =  'PURCHASE_FAIL';
 
-
 export const ORDER_FETCH_START = 'ORDER_FETCH_START';
 export const ORDER_FETCH_SUCESS =  'ORDER_FETCH_SUCESS';
 export const ORDER_FETCH_FAIL =  'ORDER_FETCH_FAIL';
+
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCESS = 'AUTH_SUCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const AUTH_LOGOUT= 'AUTH_LOGOUT';
+
