@@ -1,13 +1,16 @@
 import axios from 'axios';
 import * as actionType from './actionTypes';
 
+export const logout=()=>{
+    return dispatch=>{
+        dispatch({type:actionType.AUTH_LOGOUT,})
+    }
+}
 
 export const checkAuthTimeout =(expireTime)=>{
     return dispatch =>{
         setTimeout(() => {
-            dispatch({
-                type:actionType.AUTH_LOGOUT,
-            })
+            dispatch(logout());
         }, expireTime*1000);
     }
 }
@@ -25,7 +28,6 @@ export const auth=(email,password,isSignUp) =>{
             returnSecureToken:true,
         };
         axios.post(url,authData).then(response=>{
-                console.log(response);
                 dispatch({type:actionType.AUTH_SUCESS,data:response.data});
                 dispatch(checkAuthTimeout(response.data.expiresIn));
             }

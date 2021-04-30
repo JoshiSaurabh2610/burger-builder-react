@@ -15,8 +15,13 @@ const Toolbar=(props)=>{
             <div className={classes.Navitems}>
                 <Navitem link="/">Home</Navitem>
                 <Navitem link="/burgers">Burgers</Navitem>
-                <Navitem link="/orders">Orders</Navitem>
-                <Navitem link="/auth">Login</Navitem>
+                {
+                    props.isAuthenticated?<Navitem link="/orders">Orders</Navitem>:null
+                }
+                {
+                    props.isAuthenticated ?<Navitem link="/logout">Logout</Navitem>
+                            : <Navitem link="/auth">Login</Navitem>
+                }
             </div>
         </div>
         <div className={classes.spaceDiv}></div>

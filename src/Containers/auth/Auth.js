@@ -5,6 +5,7 @@ import classes from './Auth.module.css';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 import Spinner from '../../Components/UI/Spinner/Spinner';
+import { Redirect } from 'react-router';
 
 class Auth extends Component {
     state={
@@ -85,10 +86,10 @@ class Auth extends Component {
     authHandler=(event)=>{
         event.preventDefault();
         this.props.auth(this.state.orderForm.email.value,this.state.orderForm.password.value,this.state.isSignUp);
+        
     }
     
     authSwitchModeHandler=()=>{
-        console.log('[authSwitchModeHandler]');
         this.setState(prevstate=>{
             return{isSignUp: !prevstate.isSignUp};
         })
@@ -116,9 +117,13 @@ class Auth extends Component {
         if(this.props.error){
             errMsg=<p style={{color:'red'}}>{this.props.error.message}</p>
         }
-            
+        let authRedirect=null;
+        if(this.props.isAuthenticated){
+            authRedirect= this.props.isBuilding ?<Redirect to='/checkout'/> :<Redirect to="/burgers"/>;
+        }
         return(
             <div className={classes.authDiv}>  
+                {authRedirect}
                 {errMsg}
                 <form onSubmit={this.authHandler}>
                     {this.props.loading?<Spinner/>:form}
@@ -135,6 +140,8 @@ const mapStateToProps=state=>{
     return{
         loading:state.auth.loading,
         error:state.auth.error,
+        isAuthenticated:state.auth.idToken!=null,
+        isBuilding: state.burgerBuilder.ingredients!=null
     }
 }
 
